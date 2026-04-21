@@ -1,0 +1,102 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    SEPIK FRESH - QUICK SETUP GUIDE                           ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🎯 SETUP IN 5 MINUTES
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: Extract Project
+────────────────────────
+Extract the ZIP file to a folder on your computer
+
+
+STEP 2: Install Dependencies
+─────────────────────────────
+Open terminal in the sepik_fresh folder:
+
+    cd sepik_fresh
+    pip install -r requirements.txt
+
+
+STEP 3: Setup Database
+──────────────────────
+Open phpMyAdmin (http://localhost/phpmyadmin):
+1. Create database: sepik_database
+2. Click Import
+3. Choose file: sepik_fresh/database/database.sql
+4. Click Go
+
+
+STEP 4: Configure Database (if needed)
+───────────────────────────────────────
+Edit sepik_fresh/config.py:
+
+    DB_USER = 'root'          # Your MySQL username
+    DB_PASSWORD = ''          # Your MySQL password
+
+
+STEP 5: Create Users
+────────────────────
+In terminal:
+
+    cd sepik_fresh
+    python add_required_users.py
+
+
+STEP 6: Start Application
+─────────────────────────
+In terminal:
+
+    python app.py
+
+
+STEP 7: Open Browser
+────────────────────
+Go to: http://localhost:5000
+
+
+STEP 8: Login
+─────────────
+Admin:    admin / Pass@2026!
+Customer: basic / Pass@2026!
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ DONE! You should see the Sepik Fresh home page.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 AUTOMATED SETUP (Even Faster!)
+═══════════════════════════════════════════════════════════════════════════════
+
+Windows:
+    cd sepik_fresh
+    .\run.ps1
+
+Linux/Mac:
+    cd sepik_fresh
+    ./install.sh
+
+This automatically does everything for you!
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📚 MORE HELP
+═══════════════════════════════════════════════════════════════════════════════
+
+• README.md - Complete documentation
+• SETUP_INSTRUCTIONS.md - Detailed setup guide
+• docs/ folder - All documentation
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔐 DEFAULT PASSWORDS
+═══════════════════════════════════════════════════════════════════════════════
+
+All accounts use: Pass@2026!
+
+Admin:     admin / Pass@2026!
+Customer:  basic / Pass@2026!
+
+═══════════════════════════════════════════════════════════════════════════════
