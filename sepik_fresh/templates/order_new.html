@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - Place Order</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link"><i class="fas fa-home"></i> Home</a>
+            <a href="/products"  class="sidebar-link"><i class="fas fa-box"></i> Products</a>
+            <a href="/order/new" class="sidebar-link active"><i class="fas fa-cart-plus"></i> Place Order</a>
+            <a href="/my-orders" class="sidebar-link"><i class="fas fa-shopping-cart"></i> My Orders</a>
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <h2>Place New Order</h2>
+            <div class="dash-user"><i class="fas fa-user-circle"></i><span>{{ session_name }}</span></div>
+        </header>
+
+        <section class="dash-content">
+            {% if error %}
+            <div class="flash-msg error">{{ error }}</div>
+            {% endif %}
+
+            <div class="dash-table-box">
+                <h3>Select Products</h3>
+                <form method="POST" action="/order/new" id="orderForm">
+                    <div class="order-products-grid">
+                        {% for p in products %}
+                        <div class="order-product-card">
+                            <div class="order-product-image">
+                                {% if p.image_url %}
+                                <img src="{{ p.image_url }}" alt="{{ p.product_name }}">
+                                {% else %}
+                                <div class="order-product-placeholder">
+                                    {% if p.product_category == 'eggs' %}
+                                    <i class="fas fa-egg fa-3x"></i>
+                                    {% else %}
+                                    <i class="fas fa-drumstick-bite fa-3x"></i>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="order-product-info">
+                                <h4>{{ p.product_name }}</h4>
+                                <p class="order-product-category">{{ p.product_category|capitalize }}</p>
+                                <p class="order-product-price">K{{ "%.2f"|format(p.unit_price) }}</p>
+                                <p class="order-product-stock">
+                                    {% if p.stock_quantity > 0 %}
+                                    <span class="stock-available"><i class="fas fa-check-circle"></i> {{ p.stock_quantity }} in stock</span>
+                                    {% else %}
+                                    <span class="stock-unavailable"><i class="fas fa-times-circle"></i> Out of stock</span>
+                                    {% endif %}
+                                </p>
+                                <div class="order-product-quantity">
+                                    <label for="qty_{{ p.product_id }}">Quantity:</label>
+                                    <input type="number"
+                                           id="qty_{{ p.product_id }}"
+                                           name="qty_{{ p.product_id }}"
+                                           min="0" max="{{ p.stock_quantity }}"
+                                           value="{% if preselect == p.product_id %}1{% else %}0{% endif %}"
+                                           class="qty-input"
+                                           data-price="{{ p.unit_price }}"
+                                           {% if p.stock_quantity == 0 %}disabled{% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="order-summary">
+                        <span>Total: <strong id="orderTotal">K0.00</strong></span>
+                        <button type="submit" class="btn-primary" id="submitOrder" disabled>Confirm Order</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+    <script>
+        // Live total calculation
+        const inputs = document.querySelectorAll('.qty-input');
+        const totalEl = document.getElementById('orderTotal');
+        const submitBtn = document.getElementById('submitOrder');
+
+        function calcTotal() {
+            let total = 0;
+            inputs.forEach(i => {
+                total += parseFloat(i.dataset.price) * (parseInt(i.value) || 0);
+            });
+            totalEl.textContent = 'K' + total.toFixed(2);
+            submitBtn.disabled = total === 0;
+        }
+
+        inputs.forEach(i => i.addEventListener('input', calcTotal));
+        calcTotal();
+    </script>
+</body>
+</html>

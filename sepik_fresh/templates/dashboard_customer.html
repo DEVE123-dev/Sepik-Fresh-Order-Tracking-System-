@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - My Dashboard</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link active"><i class="fas fa-home"></i> Home</a>
+            <a href="/order/new"  class="sidebar-link"><i class="fas fa-cart-plus"></i> Place Order</a>
+            <a href="/my-orders"  class="sidebar-link"><i class="fas fa-shopping-cart"></i> My Orders</a>
+            <a href="/products"   class="sidebar-link"><i class="fas fa-box"></i> Products</a>
+            <a href="/profile"    class="sidebar-link"><i class="fas fa-user"></i> My Profile</a>
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2>My Dashboard</h2>
+            <div class="dash-user">
+                <i class="fas fa-user-circle"></i>
+                <span>{{ session_name }}</span>
+            </div>
+        </header>
+
+        <section class="dash-content">
+            <h3 class="dash-welcome">Welcome, {{ session_name }}</h3>
+
+            <div class="stats-grid">
+                <div class="stat-card green">
+                    <i class="fas fa-shopping-cart"></i>
+                    <div><h4>My Orders</h4><p class="stat-num">{{ total }}</p></div>
+                </div>
+                <div class="stat-card orange">
+                    <i class="fas fa-truck"></i>
+                    <div><h4>In Delivery</h4><p class="stat-num">{{ in_del }}</p></div>
+                </div>
+                <div class="stat-card blue">
+                    <i class="fas fa-check-circle"></i>
+                    <div><h4>Delivered</h4><p class="stat-num">{{ delivered }}</p></div>
+                </div>
+            </div>
+
+            <!-- Product Catalog Section -->
+            <div class="dash-table-box" style="margin-bottom: 32px;">
+                <h3>Featured Products <a href="/products" style="font-size:0.8rem; color:#f97316; margin-left:12px;">View All</a></h3>
+                <div class="products-grid" style="margin-top: 16px;">
+                    {% for p in products %}
+                    <div class="product-card">
+                        <div class="product-icon">
+                            {% if p.product_category == 'eggs' %}
+                            <i class="fas fa-egg"></i>
+                            {% else %}
+                            <i class="fas fa-drumstick-bite"></i>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3>{{ p.product_name }}</h3>
+                            <p class="product-desc">{{ p.description }}</p>
+                            <div class="product-meta">
+                                <span class="product-price">K{{ "%.2f"|format(p.unit_price) }}</span>
+                                <span class="product-stock {% if p.stock_quantity < 10 %}low{% endif %}">
+                                    {{ p.stock_quantity }} in stock
+                                </span>
+                            </div>
+                            {% if p.stock_quantity > 0 %}
+                            <a href="/order/new?product={{ p.product_id }}" class="btn-order">Order Now</a>
+                            {% else %}
+                            <span style="font-size:0.8rem; color:#dc2626; font-weight:600;">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <p style="color:#6b7280; font-size:0.9rem;">No products available at the moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="dash-table-box">
+                <h3>Recent Orders <a href="/my-orders" style="font-size:0.8rem; color:#f97316; margin-left:12px;">View All</a></h3>
+                <table class="dash-table">
+                    <thead>
+                        <tr><th>Order ID</th><th>Amount</th><th>Status</th><th>Date</th><th>Track</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for o in orders %}
+                        <tr>
+                            <td>#{{ o.order_id }}</td>
+                            <td>K{{ "%.2f"|format(o.total_amount) }}</td>
+                            <td><span class="badge {{ o.order_status }}">{{ o.order_status|replace('_',' ')|title }}</span></td>
+                            <td>{{ o.order_date.strftime('%d %b %Y') }}</td>
+                            <td><a href="/track/{{ o.order_id }}" class="btn-sm btn-track">Track</a></td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" style="color:#6b7280;">No orders yet. <a href="/order/new" style="color:#2a7a30;">Place one now</a>.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - My Profile</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link"><i class="fas fa-home"></i> Home</a>
+            {% if role == 'customer' %}
+            <a href="/order/new"  class="sidebar-link"><i class="fas fa-cart-plus"></i> Place Order</a>
+            <a href="/my-orders"  class="sidebar-link"><i class="fas fa-shopping-cart"></i> My Orders</a>
+            <a href="/profile"    class="sidebar-link active"><i class="fas fa-user"></i> My Profile</a>
+            {% elif role == 'admin' %}
+            <a href="/alerts"   class="sidebar-link"><i class="fas fa-bell"></i> Alerts</a>
+            <a href="/admin/users"  class="sidebar-link"><i class="fas fa-users"></i> Users</a>
+            <a href="/products"     class="sidebar-link"><i class="fas fa-box"></i> Products</a>
+            <a href="/admin/orders" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="/profile"      class="sidebar-link active"><i class="fas fa-user"></i> Profile</a>
+            {% elif role == 'delivery_staff' %}
+            <a href="/staff/deliveries" class="sidebar-link"><i class="fas fa-truck"></i> My Deliveries</a>
+            <a href="/profile"          class="sidebar-link active"><i class="fas fa-user"></i> My Profile</a>
+            {% endif %}
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h2>My Profile</h2>
+            <div class="dash-user">
+                <i class="fas fa-user-circle"></i>
+                <span>{{ session_name }}</span>
+            </div>
+        </header>
+
+        <section class="dash-content">
+            <h3 class="dash-welcome">Profile Information</h3>
+
+            {% if flash %}
+            <div class="flash-msg {{ flash.type }}">{{ flash.msg }}</div>
+            {% endif %}
+
+            <div class="dash-table-box" style="max-width: 700px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                    <h3><i class="fas fa-user-circle" style="color:#2a7a30; margin-right:8px;"></i> Personal Details</h3>
+                    <a href="/profile/edit" class="btn-primary" style="text-decoration:none; padding:8px 16px; font-size:0.85rem;">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </a>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="profile-row">
+                        <span class="profile-label"><i class="fas fa-user"></i> Full Name</span>
+                        <span class="profile-value">{{ user.first_name }} {{ user.last_name }}</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label"><i class="fas fa-envelope"></i> Email</span>
+                        <span class="profile-value">{{ user.email }}</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label"><i class="fas fa-phone"></i> Phone</span>
+                        <span class="profile-value">{{ user.phone or 'Not provided' }}</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label"><i class="fas fa-map-marker-alt"></i> Address</span>
+                        <span class="profile-value">{{ user.address or 'Not provided' }}</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label"><i class="fas fa-id-badge"></i> Role</span>
+                        <span class="profile-value">
+                            <span class="badge {{ user.role }}">{{ user.role|replace('_',' ')|title }}</span>
+                        </span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label"><i class="fas fa-calendar"></i> Member Since</span>
+                        <span class="profile-value">{{ user.created_at.strftime('%d %B %Y') }}</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label"><i class="fas fa-check-circle"></i> Account Status</span>
+                        <span class="profile-value">
+                            {% if user.is_active %}
+                            <span style="color:#2a7a30; font-weight:600;"><i class="fas fa-check"></i> Active</span>
+                            {% else %}
+                            <span style="color:#dc2626; font-weight:600;"><i class="fas fa-times"></i> Inactive</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                    <p style="color:#6b7280; font-size:0.9rem; margin-bottom:12px;">
+                        <i class="fas fa-info-circle"></i> To update your profile information, please contact support at 
+                        <a href="mailto:support@sepikfresh.pg" style="color:#2a7a30; font-weight:600;">support@sepikfresh.pg</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

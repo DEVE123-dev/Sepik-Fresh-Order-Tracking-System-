@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - Track Order</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link"><i class="fas fa-home"></i> Home</a>
+            <a href="/my-orders" class="sidebar-link"><i class="fas fa-shopping-cart"></i> My Orders</a>
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <h2>Track Order #{{ order.order_id }}</h2>
+            <div class="dash-user"><i class="fas fa-user-circle"></i><span>{{ session_name }}</span></div>
+        </header>
+
+        <section class="dash-content">
+            <!-- Order summary -->
+            <div class="dash-table-box" style="margin-bottom:24px;">
+                <h3>Order Summary</h3>
+                <div class="order-detail-grid">
+                    <div><span>Order ID</span><strong>#{{ order.order_id }}</strong></div>
+                    <div><span>Date</span><strong>{{ order.order_date.strftime('%d %b %Y %H:%M') }}</strong></div>
+                    <div><span>Total</span><strong>K{{ "%.2f"|format(order.total_amount) }}</strong></div>
+                    <div><span>ETA</span><strong>{{ order.estimated_delivery_time.strftime('%d %b %Y %H:%M') if order.estimated_delivery_time else 'TBC' }}</strong></div>
+                </div>
+
+                <table class="dash-table" style="margin-top:16px;">
+                    <thead><tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>{{ item.product_name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>K{{ "%.2f"|format(item.unit_price) }}</td>
+                            <td>K{{ "%.2f"|format(item.unit_price * item.quantity) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Status timeline -->
+            <div class="dash-table-box">
+                <h3>Delivery Status</h3>
+                <div class="tracking-timeline">
+                    {% set steps = ['pending','confirmed','processing','out_for_delivery','delivered'] %}
+                    {% set current_idx = steps.index(order.order_status) if order.order_status in steps else 0 %}
+                    {% for step in steps %}
+                    {% set idx = loop.index0 %}
+                    <div class="track-step {% if idx < current_idx %}done{% elif idx == current_idx %}active{% endif %}">
+                        <div class="track-dot">
+                            {% if idx < current_idx %}<i class="fas fa-check"></i>
+                            {% elif idx == current_idx %}<i class="fas fa-circle"></i>
+                            {% else %}<i class="far fa-circle"></i>{% endif %}
+                        </div>
+                        <div class="track-label">{{ step|replace('_',' ')|title }}</div>
+                        {% if not loop.last %}<div class="track-line {% if idx < current_idx %}done{% endif %}"></div>{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if order.order_status == 'cancelled' %}
+                <div class="flash-msg error" style="margin-top:16px;">This order has been cancelled.</div>
+                {% endif %}
+            </div>
+
+            <!-- Cancel Order Section -->
+            {% if order.order_status in ['pending', 'confirmed'] and role == 'customer' %}
+            <div class="dash-table-box" style="margin-top:24px;">
+                <h3 style="color:#dc2626;"><i class="fas fa-times-circle"></i> Cancel Order</h3>
+                <p style="color:#6b7280; margin:12px 0;">
+                    You can cancel this order while it's still pending or confirmed.
+                </p>
+                <form method="POST" action="/order/{{ order.order_id }}/cancel" 
+                      onsubmit="return confirm('Are you sure you want to cancel this order? This action cannot be undone.');">
+                    <div class="form-group">
+                        <label>Reason for cancellation (optional):</label>
+                        <textarea name="reason" rows="2" placeholder="e.g., Changed my mind, ordered by mistake..." style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-action btn-danger" style="background:#dc2626; color:white; padding:10px 20px; border:none; border-radius:4px; cursor:pointer; margin-top:10px;">
+                        <i class="fas fa-ban"></i> Cancel Order
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

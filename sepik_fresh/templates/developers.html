@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developers - Sepik Fresh</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .dev-hero {
+            background: linear-gradient(135deg, var(--dark-green), var(--deeper-green));
+            padding: 60px 30px;
+            text-align: center;
+            color: white;
+        }
+        .dev-hero h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .dev-hero p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+        }
+        .dev-section {
+            padding: 60px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .dev-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .dev-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .dev-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .dev-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            border: 4px solid var(--green);
+        }
+        .dev-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--deeper-green);
+            margin-bottom: 8px;
+        }
+        .dev-role {
+            color: var(--orange);
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+        .dev-bio {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.92rem;
+        }
+        .dev-contact {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .dev-contact a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .dev-contact a:hover {
+            background: var(--dark-green);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="/static/images/logo.jpeg" alt="Sepik Fresh Logo" class="nav-logo">
+            <span class="nav-brand">Sepik Fresh</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/developers" class="active">Developers</a></li>
+            <li><a href="/documentation">Documentation</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+        </ul>
+        <div class="nav-right">
+            {% if session.get('user_id') %}
+                <a href="/dashboard" class="btn-nav-login">Dashboard</a>
+            {% else %}
+                <a href="/login" class="btn-nav-login">Login</a>
+            {% endif %}
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="dev-hero">
+        <h1>Meet Our Development Team</h1>
+        <p>The talented individuals behind Sepik Fresh Tracking System</p>
+    </section>
+
+    <!-- DEVELOPERS SECTION -->
+    <section class="dev-section">
+        <div class="dev-grid">
+            
+            <!-- Developer 1 -->
+            <div class="dev-card">
+                <img src="/static/images/dev1.jpg" alt="Developer 1" class="dev-photo" onerror="this.src='https://via.placeholder.com/150/3cb043/ffffff?text=Dev+1'">
+                <h3 class="dev-name">Benjamin BINO</h3>
+                <p class="dev-role">Lead Developer & Project Manager</p>
+                <p class="dev-bio">
+                    Benjamin is a full-stack developer with 2+ years of experience in web development. 
+                    He led the architecture and implementation of the Sepik Fresh tracking system, 
+                    focusing on scalability and user experience.
+                </p>
+                <div class="dev-contact">
+                    <a href="mailto:benjaminbino19@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="https://github.com/DEVE123-dev" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="www.linkedin.com/in/benjamin-bino-9083b3263" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Developer 2 -->
+            <div class="dev-card">
+                <img src="/static/images/dev2.jpg" alt="Developer 2" class="dev-photo" onerror="this.src='https://via.placeholder.com/150/3cb043/ffffff?text=Dev+2'">
+                <h3 class="dev-name">Isho Jonduo</h3>
+                <p class="dev-role">Documentation Specialist and Design Reviewer</p>
+                <p class="dev-bio">
+                    Isho contributed to the Sepik Fresh project by focusing on documentation and providing constructive feedback on the system designs. His careful review and insights helped refine the overall structure and ensure clarity in the project’s technical documentation, strengthening both the usability and presentation of the platform.
+                </p>
+                <div class="dev-contact">
+                    <a href="mailto:ishojonduo@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="https://github.com/janesmith" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/janesmith" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Developer 3 -->
+            <div class="dev-card">
+                <img src="/static/images/dev3.jpg" alt="Developer 3" class="dev-photo" onerror="this.src='https://via.placeholder.com/150/3cb043/ffffff?text=Dev+3'">
+                <h3 class="dev-name">Penington Akamiau</h3>
+                <p class="dev-role">Project Initiator & Planner</p>
+                <p class="dev-bio">
+                    Penington (AKA Mr sepikfresh himself) laid the foundation for Sepik Fresh by creating the initial database and drafting the project proposal. Beyond this, he organized the sprints and Agile planning sessions, ensuring structured progress and collaboration. He also produced the UML diagrams that clarified system architecture, while Penington focused on crafting the intuitive user interface and responsive design. Together, their contributions balanced technical planning with user‑centered design, making the platform both robust and accessible.
+
+
+                </p>
+                <div class="dev-contact">
+                    <a href="mailto:penningtonakamiau@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="https://github.com/michaelj" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/michaelj" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="/static/images/logo.jpeg" alt="Logo" class="footer-logo">
+                <span>Sepik Fresh</span>
+            </div>
+            <p class="footer-tagline">"Real-time visibility, reliable delivery."</p>
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="footer-copy">&copy; 2026 Sepik Fresh. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.dev-card');
+            animatedElements.forEach(el => {
+                el.classList.add('fade-in-element');
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

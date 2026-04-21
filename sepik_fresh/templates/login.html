@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+    FILE: login.html
+    PURPOSE: Login page for the Sepik Fresh Tracking System.
+    SECTIONS:
+        1. top-bar    - Logo left, company title center
+        2. login-card - Email, password form
+        3. bottom-bar - Register link and social icons
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - Login</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- SECTION 1: TOP BAR - Logo on left, title in center, home link on right -->
+    <div class="top-bar">
+        <div class="logo-box">
+            <img src="/static/images/logo.jpeg" alt="Sepik Fresh Logo" class="logo-img">
+            <p class="tagline">"Real-time visibility, reliable delivery."</p>
+        </div>
+        <h1 class="company-title">Sepik Fresh</h1>
+        <a href="/" class="home-link" title="Back to Home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+    </div>
+
+    <!-- SECTION 2: LOGIN CARD - The main login form -->
+    <div class="center-area">
+        <div class="login-card">
+
+            <h2 class="login-title">LOGIN</h2>
+
+            <!-- Error message: only displayed when login fails -->
+            {% if error %}
+            <div class="error-msg">&#9888; {{ error }}</div>
+            {% endif %}
+
+            <!-- Form uses POST so password is hidden from the URL bar -->
+            <form method="POST" action="/login">
+
+                <!-- Email/Username field -->
+                <div class="field-group">
+                    <input type="text"
+                           id="email"
+                           name="email"
+                           placeholder="email or username"
+                           required
+                           autocomplete="email">
+                </div>
+
+                <!-- Password field with show/hide toggle button -->
+                <div class="field-group password-group">
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="password"
+                           required
+                           autocomplete="current-password">
+                    <button type="button" class="eye-btn" onclick="togglePassword()" aria-label="Show or hide password">
+                        <i class="fa fa-eye" id="eye-icon"></i>
+                    </button>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn-login">Login</button>
+
+                <!-- Forgot Password Link -->
+                <p style="text-align:center; margin-top:16px; font-size:0.9rem;">
+                    <a href="/forgot-password" style="color:#2a7a30; font-weight:600; text-decoration:none;">
+                        Forgot Password?
+                    </a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION 3: BOTTOM BAR - Register link and social icons -->
+    <div class="bottom-bar">
+        <p class="register-text">
+            Do not have an account?
+            <a href="/register" class="register-link">Register!</a>
+        </p>
+
+        <div class="social-icons">
+            <a href="#" class="social-btn facebook" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-btn whatsapp" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="#" class="social-btn linkedin" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT: Toggles password visibility -->
+    <script>
+        function togglePassword() {
+            const pwField = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (pwField.type === 'password') {
+                pwField.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                pwField.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+
+</body>
+</html>

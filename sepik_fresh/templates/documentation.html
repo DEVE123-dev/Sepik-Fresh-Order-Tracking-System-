@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Sepik Fresh</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .doc-hero {
+            background: linear-gradient(135deg, var(--dark-green), var(--deeper-green));
+            padding: 60px 30px;
+            text-align: center;
+            color: white;
+        }
+        .doc-hero h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .doc-hero p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+        }
+        .doc-section {
+            padding: 60px 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .doc-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .doc-card h2 {
+            color: var(--deeper-green);
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+        .doc-card p {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--green);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .doc-link:hover {
+            background: var(--dark-green);
+        }
+        .doc-link i {
+            font-size: 1.2rem;
+        }
+        .doc-list {
+            list-style: none;
+            padding: 0;
+        }
+        .doc-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .doc-list li:last-child {
+            border-bottom: none;
+        }
+        .doc-list i {
+            color: var(--green);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="/static/images/logo.jpeg" alt="Sepik Fresh Logo" class="nav-logo">
+            <span class="nav-brand">Sepik Fresh</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/developers">Developers</a></li>
+            <li><a href="/documentation" class="active">Documentation</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+        </ul>
+        <div class="nav-right">
+            {% if session.get('user_id') %}
+                <a href="/dashboard" class="btn-nav-login">Dashboard</a>
+            {% else %}
+                <a href="/login" class="btn-nav-login">Login</a>
+            {% endif %}
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="doc-hero">
+        <h1>Project Documentation</h1>
+        <p>Complete technical documentation for Sepik Fresh Tracking System</p>
+    </section>
+
+    <!-- DOCUMENTATION SECTION -->
+    <section class="doc-section">
+        
+        <!-- Main Documentation -->
+        <div class="doc-card">
+            <h2><i class="fas fa-file-pdf"></i> Complete Project Documentation</h2>
+            <p>
+                Download the comprehensive project documentation including system architecture, 
+                database design, user stories, UML diagrams, and implementation details.
+            </p>
+            <a href="/static/docs/Sepik_Fresh_Documentation.pdf" class="doc-link" download>
+                <i class="fas fa-download"></i>
+                Download Full Documentation (PDF)
+            </a>
+        </div>
+
+        <!-- What's Included -->
+        <div class="doc-card">
+            <h2>What's Included</h2>
+            <ul class="doc-list">
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>System Overview:</strong> Project goals, scope, and objectives</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>Requirements Analysis:</strong> Functional and non-functional requirements</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>User Stories:</strong> Detailed user stories for all stakeholders</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>UML Diagrams:</strong> Use case, class, sequence, and activity diagrams</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>Database Design:</strong> ER diagrams and schema documentation</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>System Architecture:</strong> Technical stack and design patterns</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>Implementation Details:</strong> Code structure and key features</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>Testing Strategy:</strong> Test cases and quality assurance</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>Deployment Guide:</strong> Installation and configuration instructions</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Additional Resources -->
+        <div class="doc-card">
+            <h2>Additional Resources</h2>
+            <p>
+                For installation instructions, please refer to the 
+                <a href="/static/docs/INSTALLATION_GUIDE.md" style="color: var(--green); font-weight: 600;">Installation Guide</a>.
+            </p>
+            <p>
+                View the project source code and contribute on 
+                <a href="https://github.com/sepikfresh/tracking-system" style="color: var(--green); font-weight: 600;" target="_blank">GitHub</a>.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="/static/images/logo.jpeg" alt="Logo" class="footer-logo">
+                <span>Sepik Fresh</span>
+            </div>
+            <p class="footer-tagline">"Real-time visibility, reliable delivery."</p>
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="footer-copy">&copy; 2026 Sepik Fresh. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.doc-card');
+            animatedElements.forEach(el => {
+                el.classList.add('fade-in-element');
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

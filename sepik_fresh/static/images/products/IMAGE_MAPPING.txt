@@ -1,0 +1,63 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                        PRODUCT IMAGE MAPPING                                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📸 YOUR IMAGE FILES
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ 30eggs.jpg
+✅ chickenpieces.jpg
+✅ dozeneggs.jpg
+✅ wholefreshchicken.jpg
+
+
+🔗 DATABASE MAPPING
+═══════════════════════════════════════════════════════════════════════════════
+
+Product ID 2: Whole Fresh Chicken (1.5kg)
+    File: wholefreshchicken.jpg
+    Path: /static/images/products/wholefreshchicken.jpg
+
+Product ID 3: Chicken Pieces (1kg)
+    File: chickenpieces.jpg
+    Path: /static/images/products/chickenpieces.jpg
+
+Product ID 4: Fresh Eggs (Tray of 30)
+    File: 30eggs.jpg
+    Path: /static/images/products/30eggs.jpg
+
+Product ID 5: Fresh Eggs (Dozen)
+    File: dozeneggs.jpg
+    Path: /static/images/products/dozeneggs.jpg
+
+
+✅ TO UPDATE DATABASE
+═══════════════════════════════════════════════════════════════════════════════
+
+Run this file in phpMyAdmin:
+    database/update_image_paths.sql
+
+Or run these SQL commands:
+
+    UPDATE products SET image_url = '/static/images/products/wholefreshchicken.jpg' WHERE product_id = 2;
+    UPDATE products SET image_url = '/static/images/products/chickenpieces.jpg' WHERE product_id = 3;
+    UPDATE products SET image_url = '/static/images/products/30eggs.jpg' WHERE product_id = 4;
+    UPDATE products SET image_url = '/static/images/products/dozeneggs.jpg' WHERE product_id = 5;
+
+
+🎯 VERIFY
+═══════════════════════════════════════════════════════════════════════════════
+
+Check if images are set:
+    SELECT product_id, product_name, image_url FROM products;
+
+Test direct access in browser:
+    http://localhost:5000/static/images/products/wholefreshchicken.jpg
+    http://localhost:5000/static/images/products/chickenpieces.jpg
+    http://localhost:5000/static/images/products/30eggs.jpg
+    http://localhost:5000/static/images/products/dozeneggs.jpg
+
+
+═══════════════════════════════════════════════════════════════════════════════
+After updating database, refresh your browser to see images! 🎉
+═══════════════════════════════════════════════════════════════════════════════

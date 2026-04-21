@@ -1,0 +1,163 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    PRODUCT IMAGES & SLIDESHOW QUICK START                    ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🚀 SETUP (5 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: Update Database
+────────────────────────
+Run this SQL in phpMyAdmin:
+
+    ALTER TABLE products 
+    ADD COLUMN IF NOT EXISTS image_url VARCHAR(500) DEFAULT NULL 
+    AFTER description;
+
+STEP 2: Create Folder (if needed)
+──────────────────────────────────
+The folder will be created automatically, but you can create it manually:
+
+    mkdir sepik_fresh/static/images/products
+
+STEP 3: Start Application
+──────────────────────────
+    cd sepik_fresh
+    python app.py
+
+STEP 4: Test Features
+──────────────────────
+✓ Log in as admin (ishojonduo@gmail.com / Pass@2026!)
+✓ Go to Products page
+✓ Click "Add Image" on any product
+✓ Upload an image
+✓ Visit home page to see slideshow
+
+
+📸 HOW TO USE
+═══════════════════════════════════════════════════════════════════════════════
+
+ADMIN: Upload Product Images
+─────────────────────────────
+1. Log in as admin
+2. Navigate to Products page
+3. Find product card
+4. Click "Add Image" or "Update Image" button
+5. Select image file (PNG, JPG, JPEG, GIF, WEBP)
+6. Image uploads and displays automatically
+
+CUSTOMER: View Products
+────────────────────────
+1. Log in as customer
+2. Go to Products page - see images
+3. Go to Place Order - see images in order form
+4. Select products and place order
+
+PUBLIC: View Slideshow
+──────────────────────
+1. Visit home page (no login needed)
+2. Scroll to "Featured Products" section
+3. Watch automatic slideshow
+4. Use arrows or dots to navigate manually
+
+
+🎨 IMAGE RECOMMENDATIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ Size: 800x800 pixels or larger
+✓ Format: JPEG for photos, PNG for graphics
+✓ File Size: Under 2MB
+✓ Quality: High quality, well-lit, clear shots
+✓ Background: Plain white or neutral
+✓ Aspect Ratio: Square (1:1) or landscape (4:3)
+
+
+🔧 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+Problem: "No such column: image_url"
+Solution: Run the database migration SQL again
+
+Problem: "Permission denied" when uploading
+Solution: Check folder permissions (chmod 755 on Linux/Mac)
+
+Problem: Images not displaying
+Solution: Check if file exists in /static/images/products/
+         Check browser console for 404 errors
+         Verify image_url in database
+
+Problem: Slideshow not working
+Solution: Check browser console for JavaScript errors
+         Verify products exist in database
+         Clear browser cache
+
+
+📁 WHERE ARE FILES STORED?
+═══════════════════════════════════════════════════════════════════════════════
+
+Images:     sepik_fresh/static/images/products/
+Database:   products.image_url column
+Format:     /static/images/products/product_X_XXXXXXXX.ext
+
+
+🎯 FEATURES INCLUDED
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ Admin image upload (one-click)
+✓ Product images on Products page
+✓ Product images on Order form
+✓ Home page slideshow (auto-advance)
+✓ Manual slideshow navigation (arrows + dots)
+✓ Responsive mobile design
+✓ Fallback placeholders (no image)
+✓ Secure file upload
+✓ Unique filename generation
+
+
+📚 DOCUMENTATION
+═══════════════════════════════════════════════════════════════════════════════
+
+Detailed Guide:  PRODUCT_IMAGES_FEATURE.md
+Setup Guide:     SETUP_PRODUCT_IMAGES.md
+Summary:         PRODUCT_IMAGES_IMPLEMENTATION_SUMMARY.md
+This File:       QUICK_START_IMAGES.txt
+
+
+✅ SUCCESS CHECKLIST
+═══════════════════════════════════════════════════════════════════════════════
+
+□ Database migration completed
+□ Products folder exists
+□ Admin can upload images
+□ Images display on Products page
+□ Images display on Order form
+□ Slideshow works on home page
+□ Slideshow auto-advances
+□ Arrow navigation works
+□ Dot navigation works
+□ Mobile view is responsive
+
+
+🆘 NEED HELP?
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Read PRODUCT_IMAGES_FEATURE.md for detailed documentation
+2. Check SETUP_PRODUCT_IMAGES.md for step-by-step guide
+3. Review code comments in app.py and templates
+4. Check server logs for error messages
+5. Verify database schema is correct
+
+
+💡 TIPS
+═══════════════════════════════════════════════════════════════════════════════
+
+• Use high-quality product photos for best results
+• Keep file sizes reasonable (under 2MB)
+• Upload images for all products for consistency
+• Test slideshow with at least 3-4 products
+• Check mobile view after uploading images
+• Clear browser cache if changes don't appear
+
+
+═══════════════════════════════════════════════════════════════════════════════
+Version: 1.0 | Date: April 2026 | Status: Production Ready
+═══════════════════════════════════════════════════════════════════════════════

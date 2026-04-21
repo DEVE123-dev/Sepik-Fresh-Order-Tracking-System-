@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - Register</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="logo-box">
+            <img src="/static/images/logo.jpeg" alt="Sepik Fresh Logo" class="logo-img">
+            <p class="tagline">"Real-time visibility, reliable delivery."</p>
+        </div>
+        <h1 class="company-title">Sepik Fresh</h1>
+    </div>
+
+    <div class="center-area">
+        <div class="login-card" style="max-width:480px;">
+            <h2 class="login-title">REGISTER</h2>
+
+            {% if error %}
+            <div class="error-msg">&#9888; {{ error }}</div>
+            {% endif %}
+            {% if success %}
+            <div class="success-msg">&#10003; {{ success }}</div>
+            {% endif %}
+
+            <form method="POST" action="/register">
+                <div class="field-row">
+                    <div class="field-group">
+                        <input type="text" name="first_name" placeholder="First Name" required>
+                    </div>
+                    <div class="field-group">
+                        <input type="text" name="last_name" placeholder="Last Name" required>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <input type="email" name="email" placeholder="Email address" required autocomplete="email">
+                </div>
+                <div class="field-group">
+                    <input type="text" name="phone" placeholder="Phone number (optional)">
+                </div>
+                <div class="field-group">
+                    <input type="text" name="address" placeholder="Delivery address (optional)">
+                </div>
+                <div class="field-group password-group">
+                    <input type="password" id="reg-password" name="password" placeholder="Password" required>
+                    <button type="button" class="eye-btn" onclick="toggleReg()" aria-label="Toggle password">
+                        <i class="fa fa-eye" id="reg-eye"></i>
+                    </button>
+                </div>
+                <div class="field-group">
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="btn-login">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <p class="register-text">
+            Already have an account? <a href="/login" class="register-link">Login!</a>
+        </p>
+    </div>
+
+    <script>
+        function toggleReg() {
+            const f = document.getElementById('reg-password');
+            const i = document.getElementById('reg-eye');
+            f.type = f.type === 'password' ? 'text' : 'password';
+            i.classList.toggle('fa-eye'); i.classList.toggle('fa-eye-slash');
+        }
+    </script>
+</body>
+</html>

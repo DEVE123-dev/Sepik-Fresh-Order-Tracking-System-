@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - View Message</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link"><i class="fas fa-home"></i> Home</a>
+            <a href="/admin/orders" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="/products" class="sidebar-link"><i class="fas fa-box"></i> Products</a>
+            <a href="/admin/users" class="sidebar-link"><i class="fas fa-users"></i> Users</a>
+            <a href="/admin/inbox" class="sidebar-link active"><i class="fas fa-envelope"></i> Inbox</a>
+            <a href="/alerts" class="sidebar-link"><i class="fas fa-bell"></i> Alerts</a>
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+            <h2>View Message</h2>
+            <div class="dash-user"><i class="fas fa-user-circle"></i><span>{{ session_name }}</span></div>
+        </header>
+
+        <section class="dash-content">
+            <div class="dash-table-box" style="max-width:800px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3><i class="fas fa-envelope-open"></i> Message Details</h3>
+                    <div style="display:flex; gap:10px;">
+                        <a href="/admin/inbox" class="btn-sm">
+                            <i class="fas fa-arrow-left"></i> Back to Inbox
+                        </a>
+                        <form method="POST" action="/admin/inbox/{{ message.id }}/delete" style="display:inline;"
+                              onsubmit="return confirm('Delete this message?');">
+                            <button type="submit" class="btn-sm" style="background:#dc2626; color:white;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="message-details">
+                    <div class="detail-row">
+                        <strong><i class="fas fa-user"></i> From:</strong>
+                        <span>{{ message.name }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><i class="fas fa-envelope"></i> Email:</strong>
+                        <span><a href="mailto:{{ message.email }}" style="color:#2a7a30;">{{ message.email }}</a></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><i class="fas fa-clock"></i> Received:</strong>
+                        <span>{{ message.created_at.strftime('%d %B %Y at %H:%M') }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><i class="fas fa-check-circle"></i> Status:</strong>
+                        <span>
+                            {% if message.is_read %}
+                            <span class="badge delivered">Read</span>
+                            {% else %}
+                            <span class="badge pending">Unread</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <div style="margin-top:30px; padding:20px; background:#f9fafb; border-radius:8px; border-left:4px solid #2a7a30;">
+                    <h4 style="margin:0 0 15px 0; color:#1f2937;">Message:</h4>
+                    <p style="white-space:pre-wrap; line-height:1.6; color:#374151; margin:0;">{{ message.message }}</p>
+                </div>
+
+                <div style="margin-top:20px; padding:15px; background:#fef3c7; border-radius:8px; border-left:4px solid #f59e0b;">
+                    <p style="margin:0; color:#92400e;">
+                        <i class="fas fa-info-circle"></i> 
+                        <strong>Quick Reply:</strong> Click the email address above to reply directly to {{ message.name }}.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+    <style>
+        .message-details {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .detail-row {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-row strong {
+            min-width: 150px;
+            color: #6b7280;
+            font-weight: 600;
+        }
+        .detail-row span {
+            color: #1f2937;
+        }
+    </style>
+</body>
+</html>

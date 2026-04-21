@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - Manage Users</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard"    class="sidebar-link"><i class="fas fa-home"></i> Home</a>
+            <a href="/alerts"       class="sidebar-link"><i class="fas fa-bell"></i> Alerts</a>
+            <a href="/admin/users"  class="sidebar-link active"><i class="fas fa-users"></i> Users</a>
+            <a href="/products"     class="sidebar-link"><i class="fas fa-box"></i> Products</a>
+            <a href="/admin/orders" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <h2>Manage Users</h2>
+            <div class="dash-user"><i class="fas fa-user-circle"></i><span>{{ session_name }}</span></div>
+        </header>
+
+        <section class="dash-content">
+            {% if flash %}
+            <div class="flash-msg {{ flash.type }}">{{ flash.msg }}</div>
+            {% endif %}
+
+            <div class="dash-table-box">
+                <h3>All Users</h3>
+                <table class="dash-table">
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Phone</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>{{ u.user_id }}</td>
+                            <td>{{ u.first_name }} {{ u.last_name }}</td>
+                            <td>{{ u.email }}</td>
+                            <td><span class="badge {% if u.role=='admin' %}confirmed{% elif u.role=='delivery_staff' %}processing{% else %}pending{% endif %}">{{ u.role|replace('_',' ')|title }}</span></td>
+                            <td>{{ u.phone or '—' }}</td>
+                            <td><span class="badge {% if u.is_active %}confirmed{% else %}cancelled{% endif %}">{{ 'Active' if u.is_active else 'Inactive' }}</span></td>
+                            <td>
+                                <form method="POST" action="/admin/user/{{ u.user_id }}/toggle" style="display:inline">
+                                    <button class="btn-sm {% if u.is_active %}btn-danger{% else %}btn-success{% endif %}">
+                                        {{ 'Deactivate' if u.is_active else 'Activate' }}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

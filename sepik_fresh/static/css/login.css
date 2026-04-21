@@ -1,0 +1,345 @@
+/*
+ * FILE: login.css
+ * PURPOSE: Styles the Sepik Fresh login page to match the company design.
+ *
+ * COLOR PALETTE (from the Sepik Fresh brand):
+ *   - Main green background : #3cb043
+ *   - Dark green border/text: #2a7a30
+ *   - Card background       : #a8d5a2  (lighter green)
+ *   - Title red             : #c0392b
+ *   - White                 : #ffffff
+ *
+ * LAYOUT OVERVIEW:
+ *   body          → full green background, flex column layout
+ *   .top-bar      → logo left, title center
+ *   .center-area  → vertically/horizontally centers the login card
+ *   .login-card   → the form box
+ *   .bottom-bar   → register link + social icons at the bottom
+ */
+
+
+/* ─────────────────────────────────────────
+   GLOBAL RESET & BASE STYLES
+   Removes default browser spacing and sets
+   the font for the entire page.
+───────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #3cb043;   /* Main green background */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;      /* Stack sections top to bottom */
+    align-items: center;
+}
+
+
+/* ─────────────────────────────────────────
+   TOP BAR
+   Holds the logo (left), company title (center), and home link (right).
+   Uses flexbox so items sit side by side.
+───────────────────────────────────────── */
+.top-bar {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;     /* Align logo and title to the top */
+    justify-content: space-between;
+    padding: 20px 30px 0 30px;
+    position: relative;          /* Needed to position title in center */
+}
+
+/* Logo container — sits in the top-left corner */
+.logo-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 1;
+}
+
+/* The actual logo image */
+.logo-img {
+    width: 160px;
+    height: auto;
+    border: 3px solid #2a7a30;
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
+}
+
+/* Tagline text below the logo */
+.tagline {
+    font-size: 0.72rem;
+    color: #1a4a1e;
+    font-style: italic;
+    margin-top: 6px;
+    max-width: 160px;
+}
+
+/* "Sepik Fresh" large title — centered on the page */
+.company-title {
+    position: absolute;          /* Taken out of normal flow */
+    left: 50%;
+    transform: translateX(-50%); /* Perfectly centers it */
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #c0392b;              /* Red color matching the design */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+    white-space: nowrap;
+}
+
+/* Home link — sits in the top-right corner */
+.home-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid #2a7a30;
+    border-radius: 10px;
+    color: #1a3a1e;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.home-link i {
+    font-size: 1.4rem;
+}
+
+.home-link:hover {
+    background: rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+/* ─────────────────────────────────────────
+   CENTER AREA
+   Grows to fill available space and centers
+   the login card both vertically and horizontally.
+───────────────────────────────────────── */
+.center-area {
+    flex: 1;                     /* Takes up remaining vertical space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+
+/* ─────────────────────────────────────────
+   LOGIN CARD
+   The rounded box containing the form.
+   Lighter green background with a subtle shadow.
+───────────────────────────────────────── */
+.login-card {
+    background-color: #a8d5a2;   /* Light green card */
+    border-radius: 12px;
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* "LOGIN" heading inside the card */
+.login-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a3a1e;
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+}
+
+/* Error message box — shown when login fails */
+.error-msg {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 0.88rem;
+}
+
+
+/* ─────────────────────────────────────────
+   FORM FIELDS
+   Each input field sits inside a .field-group div.
+   The password group also contains the eye toggle button.
+───────────────────────────────────────── */
+.field-group {
+    margin-bottom: 16px;
+    position: relative;
+}
+
+/* Shared styles for email and password inputs */
+.field-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #2a7a30;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Highlight the field when the user clicks into it */
+.field-group input:focus {
+    border-color: #1a5c2a;
+    box-shadow: 0 0 0 3px rgba(26, 92, 42, 0.2);
+}
+
+/* Extra right padding on password field to make room for the eye button */
+.password-group input {
+    padding-right: 44px;
+}
+
+/* Eye icon button inside the password field */
+.eye-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    font-size: 1rem;
+    padding: 4px;
+}
+
+.eye-btn:hover { color: #1a5c2a; }
+
+
+/* ─────────────────────────────────────────
+   LOGIN BUTTON
+   Full-width green button that submits the form.
+───────────────────────────────────────── */
+.btn-login {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    background: #2a7a30;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-login:hover {
+    background: #1a5c2a;
+    transform: translateY(-1px);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+
+/* ─────────────────────────────────────────
+   BOTTOM BAR
+   Contains the "Register" link and social icons.
+   Pinned near the bottom of the page.
+───────────────────────────────────────── */
+.bottom-bar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0 30px 0;
+    gap: 16px;
+}
+
+/* "Do not have an account?" text */
+.register-text {
+    font-size: 0.88rem;
+    color: #1a3a1e;
+}
+
+/* "Register!" clickable link */
+.register-link {
+    color: #c0392b;              /* Red to stand out */
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ─────────────────────────────────────────
+   SOCIAL MEDIA ICONS
+   Three rounded square buttons for Facebook,
+   WhatsApp, and LinkedIn.
+───────────────────────────────────────── */
+.social-icons {
+    display: flex;
+    gap: 16px;
+}
+
+/* Base style shared by all three social buttons */
+.social-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.social-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+/* Individual brand colors */
+.facebook  { background-color: #1877f2; }
+.whatsapp  { background-color: #25d366; }
+.linkedin  { background-color: #0a66c2; }
+
+
+/* ─────────────────────────────────────────
+   RESPONSIVE — MOBILE
+   On small screens (phones), shrink the title
+   and adjust padding so nothing overflows.
+───────────────────────────────────────── */
+@media (max-width: 600px) {
+    .company-title {
+        font-size: 2rem;
+        top: 10px;
+    }
+    .logo-img {
+        width: 110px;
+    }
+    .login-card {
+        padding: 28px 20px;
+    }
+    .home-link {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    .home-link i {
+        font-size: 1.2rem;
+    }
+}

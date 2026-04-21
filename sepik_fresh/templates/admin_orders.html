@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - Manage Orders</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard"      class="sidebar-link"><i class="fas fa-home"></i> Home</a>
+            <a href="/alerts"         class="sidebar-link"><i class="fas fa-bell"></i> Alerts</a>
+            <a href="/admin/users"    class="sidebar-link"><i class="fas fa-users"></i> Users</a>
+            <a href="/products"       class="sidebar-link"><i class="fas fa-box"></i> Products</a>
+            <a href="/admin/orders"   class="sidebar-link active"><i class="fas fa-shopping-cart"></i> Orders</a>
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <h2>Manage Orders</h2>
+            <div class="dash-user"><i class="fas fa-user-circle"></i><span>{{ session_name }}</span></div>
+        </header>
+
+        <section class="dash-content">
+            {% if flash %}
+            <div class="flash-msg {{ flash.type }}">{{ flash.msg }}</div>
+            {% endif %}
+
+            <div class="dash-table-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3>All Orders</h3>
+                    <div style="display:flex; gap:10px;">
+                        <button onclick="exportToPDF()" class="btn-sm btn-danger">
+                            <i class="fas fa-file-pdf"></i> Export PDF
+                        </button>
+                        <a href="/admin/export/orders" class="btn-sm btn-success">
+                            <i class="fas fa-file-csv"></i> Export CSV
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Search and Filter Form -->
+                <form method="GET" action="/admin/orders" style="margin-bottom:20px;">
+                    <div class="form-grid" style="grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr; gap:12px;">
+                        <div class="form-group">
+                            <label>Search</label>
+                            <input type="text" name="search" placeholder="Order ID, customer name, email..." value="{{ search_query }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="status">
+                                <option value="">All Statuses</option>
+                                {% for s in ['pending','confirmed','processing','out_for_delivery','delivered','cancelled'] %}
+                                <option value="{{ s }}" {% if s == status_filter %}selected{% endif %}>
+                                    {{ s|replace('_',' ')|title }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>From Date</label>
+                            <input type="date" name="date_from" value="{{ date_from }}">
+                        </div>
+                        <div class="form-group">
+                            <label>To Date</label>
+                            <input type="date" name="date_to" value="{{ date_to }}">
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px; margin-top:12px;">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-search"></i> Filter
+                        </button>
+                        <a href="/admin/orders" class="btn-sm" style="padding:10px 16px;">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    </div>
+                </form>
+
+                {% if orders %}
+                <table class="dash-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th><th>Customer</th><th>Amount</th>
+                            <th>Status</th><th>Date</th><th>Update Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for o in orders %}
+                        <tr>
+                            <td>#{{ o.order_id }}</td>
+                            <td>{{ o.first_name }} {{ o.last_name }}</td>
+                            <td>K{{ "%.2f"|format(o.total_amount) }}</td>
+                            <td><span class="badge {{ o.order_status }}">{{ o.order_status|replace('_',' ')|title }}</span></td>
+                            <td>{{ o.order_date.strftime('%d %b %Y') }}</td>
+                            <td>
+                                <form method="POST" action="/admin/order/{{ o.order_id }}/status" style="display:flex;gap:6px;">
+                                    <select name="status" style="padding:4px 8px; border-radius:6px; border:1px solid #d1d5db;">
+                                        {% for s in ['pending','confirmed','processing','out_for_delivery','delivered','cancelled'] %}
+                                        <option value="{{ s }}" {% if s == o.order_status %}selected{% endif %}>
+                                            {{ s|replace('_',' ')|title }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn-sm btn-success">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                {% if total_pages > 1 %}
+                <div class="pagination">
+                    {% if page > 1 %}
+                    <a href="?page={{ page - 1 }}{% if search_query %}&search={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" class="btn-sm">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+                    {% endif %}
+                    
+                    <span style="margin:0 15px; color:#6b7280;">
+                        Page {{ page }} of {{ total_pages }}
+                    </span>
+                    
+                    {% if page < total_pages %}
+                    <a href="?page={{ page + 1 }}{% if search_query %}&search={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" class="btn-sm">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% else %}
+                <p style="color:#6b7280; padding:20px 0; text-align:center;">No orders found.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(18);
+            doc.text('Sepik Fresh - Orders Report', 14, 20);
+            
+            // Add date
+            doc.setFontSize(10);
+            doc.text('Generated: ' + new Date().toLocaleString(), 14, 28);
+            
+            // Get table data
+            const table = document.querySelector('.dash-table');
+            if (!table) {
+                alert('No orders to export');
+                return;
+            }
+            
+            // Extract table data
+            const headers = [];
+            const rows = [];
+            
+            // Get headers (exclude last column - Update Status)
+            const headerCells = table.querySelectorAll('thead th');
+            for (let i = 0; i < headerCells.length - 1; i++) {
+                headers.push(headerCells[i].textContent.trim());
+            }
+            
+            // Get rows
+            const bodyRows = table.querySelectorAll('tbody tr');
+            bodyRows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('td');
+                for (let i = 0; i < cells.length - 1; i++) {
+                    rowData.push(cells[i].textContent.trim());
+                }
+                rows.push(rowData);
+            });
+            
+            // Add table to PDF
+            doc.autoTable({
+                head: [headers],
+                body: rows,
+                startY: 35,
+                theme: 'grid',
+                styles: { fontSize: 9 },
+                headStyles: { fillColor: [34, 139, 34] }
+            });
+            
+            // Save PDF
+            const filename = 'sepik_fresh_orders_' + new Date().toISOString().split('T')[0] + '.pdf';
+            doc.save(filename);
+        }
+    </script>
+</body>
+</html>

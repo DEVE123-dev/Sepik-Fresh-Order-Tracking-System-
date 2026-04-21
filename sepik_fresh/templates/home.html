@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Sepik Fresh - Fresh Produce Delivery in Papua New Guinea</title>
+    <meta name="description" content="Order fresh produce online in Papua New Guinea. Sepik Fresh delivers quality fruits, vegetables, and local products directly to your door. Track your orders in real-time.">
+    <meta name="keywords" content="sepik fresh, fresh produce PNG, Papua New Guinea delivery, online grocery, fresh vegetables, fresh fruits, local produce, order tracking">
+    <meta name="author" content="Sepik Fresh">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="Sepik Fresh - Fresh Produce Delivery in Papua New Guinea">
+    <meta property="og:description" content="Order fresh produce online in Papua New Guinea. Quality fruits, vegetables, and local products delivered to your door.">
+    <meta property="og:image" content="{{ request.url_root }}static/images/logo.jpeg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.url }}">
+    <meta property="twitter:title" content="Sepik Fresh - Fresh Produce Delivery">
+    <meta property="twitter:description" content="Order fresh produce online in Papua New Guinea. Quality delivery service.">
+    <meta property="twitter:image" content="{{ request.url_root }}static/images/logo.jpeg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+    
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="/static/images/logo.jpeg" alt="Sepik Fresh Logo" class="nav-logo">
+            <span class="nav-brand">Sepik Fresh</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/developers">Developers</a></li>
+            <li><a href="/documentation">Documentation</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="/login" class="btn-nav-login">Login</a>
+        </div>
+        <!-- Mobile hamburger -->
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="/static/images/logo.jpeg" alt="Sepik Fresh" class="hero-logo">
+            <h1>Welcome to <span>Sepik Fresh</span></h1>
+            <p class="hero-tagline">"Real-time visibility, reliable delivery."</p>
+            <p class="hero-desc">
+                Sepik Fresh delivers fresh poultry and eggs from East Sepik Province
+                directly to your door. Track your orders in real time and experience
+                reliable, transparent delivery.
+            </p>
+            <div class="hero-btns">
+                <a href="/login" class="btn-primary">Get Started</a>
+                <a href="/about" class="btn-outline">Learn More</a>
+                <a href="/static/docs/documentation.pdf" class="btn-documentation" target="_blank">
+                    <i class="fas fa-file-pdf"></i> View Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT SLIDESHOW SECTION -->
+    {% if featured_products %}
+    <section class="product-slideshow-section">
+        <h2 class="section-title">Featured Products</h2>
+        <p class="section-subtitle">Fresh from our farms to your table</p>
+        
+        <div class="slideshow-container">
+            {% for product in featured_products %}
+            <div class="slide {% if loop.first %}active{% endif %}">
+                <div class="slide-content">
+                    <div class="slide-image">
+                        {% if product.image_url %}
+                        <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
+                        {% else %}
+                        <div class="slide-placeholder">
+                            {% if product.product_category == 'eggs' %}
+                            <i class="fas fa-egg fa-5x"></i>
+                            {% else %}
+                            <i class="fas fa-drumstick-bite fa-5x"></i>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="slide-info">
+                        <h3>{{ product.product_name }}</h3>
+                        <p class="slide-description">{{ product.description or 'Fresh and locally sourced' }}</p>
+                        <div class="slide-price">K{{ "%.2f"|format(product.unit_price) }}</div>
+                        <div class="slide-stock">
+                            {% if product.stock_quantity > 0 %}
+                            <span class="in-stock"><i class="fas fa-check-circle"></i> In Stock ({{ product.stock_quantity }} available)</span>
+                            {% else %}
+                            <span class="out-of-stock"><i class="fas fa-times-circle"></i> Out of Stock</span>
+                            {% endif %}
+                        </div>
+                        <a href="/login" class="btn-slide-order">Order Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Navigation Arrows -->
+            <button class="slide-prev" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slide-next" onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <!-- Dots Navigation -->
+            <div class="slide-dots">
+                {% for product in featured_products %}
+                <span class="dot {% if loop.first %}active{% endif %}" onclick="currentSlide({{ loop.index }})"></span>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- NEWS & UPDATES SECTION -->
+    <section class="news-section">
+        <h2 class="section-title">News & Updates</h2>
+        <div class="news-card">
+
+            <div class="news-panel">
+                <div class="news-panel-inner">
+                    <i class="fas fa-truck"></i>
+                    <h3>New Delivery Routes</h3>
+                    <p>Sepik Fresh has expanded delivery coverage to include Maprik, Wewak, and surrounding areas starting April 2025.</p>
+                </div>
+            </div>
+
+            <div class="news-panel">
+                <div class="news-panel-inner">
+                    <i class="fas fa-box-open"></i>
+                    <h3>New Products Available</h3>
+                    <p>We now stock fresh eggs and whole chickens in bulk. Check our product list for updated pricing and availability.</p>
+                </div>
+            </div>
+
+            <div class="news-panel">
+                <div class="news-panel-inner">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Tracking System Live</h3>
+                    <p>Our real-time order tracking system is now live. Log in to monitor your delivery status from order to doorstep.</p>
+                </div>
+            </div>
+
+            <div class="news-panel">
+                <div class="news-panel-inner">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Farmer Partnerships</h3>
+                    <p>Sepik Fresh has partnered with 12 local farmers across East Sepik Province to ensure a steady supply of fresh produce.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats-section">
+        <h2>Sepik Fresh by the Numbers</h2>
+        <div class="stats-grid-home">
+            <div class="stat-item">
+                <span class="stat-number" data-target="500">0</span>
+                <span class="stat-label">Happy Customers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="1200">0</span>
+                <span class="stat-label">Orders Delivered</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="12">0</span>
+                <span class="stat-label">Partner Farms</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="98">0</span>
+                <span class="stat-label">% On-Time Delivery</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="testimonials">
+        <h2 class="section-title">What Our Customers Say</h2>
+        <div class="testimonials-grid">
+            
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">JD</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "Sepik Fresh has transformed how I get fresh produce. The real-time tracking 
+                    gives me peace of mind, and the quality is always excellent!"
+                </p>
+                <p class="testimonial-author">John Doe</p>
+                <p class="testimonial-role">Restaurant Owner, Wewak</p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">SM</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "Reliable delivery every time! I love being able to track my order from 
+                    the farm to my doorstep. Fresh eggs and chicken delivered on schedule."
+                </p>
+                <p class="testimonial-author">Sarah Miller</p>
+                <p class="testimonial-role">Home Chef, Maprik</p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">PK</div>
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "As a hotel manager, I need consistent quality and timing. Sepik Fresh 
+                    delivers both. Their tracking system is a game-changer!"
+                </p>
+                <p class="testimonial-author">Peter Kaupa</p>
+                <p class="testimonial-role">Hotel Manager, East Sepik</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">Why Choose Sepik Fresh?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Real-Time Tracking</h3>
+                <p>Monitor your order from farm to doorstep with live delivery updates.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-leaf"></i>
+                <h3>Fresh & Local</h3>
+                <p>Locally raised poultry and eggs from East Sepik Province farmers.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-truck"></i>
+                <h3>Reliable Delivery</h3>
+                <p>On-time delivery with professional staff you can count on.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure System</h3>
+                <p>Role-based access ensures your data is always safe and private.</p>
+            </div>
+        </div>
+    </section>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="/static/images/logo.jpeg" alt="Logo" class="footer-logo">
+                <span>Sepik Fresh</span>
+            </div>
+            <p class="footer-tagline">"Real-time visibility, reliable delivery."</p>
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="footer-copy">&copy; 2026 Sepik Fresh. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+    <script>
+        // ── PRODUCT SLIDESHOW ──
+        let currentSlideIndex = 1;
+        let slideTimer;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (!slides.length) return;
+            
+            if (n > slides.length) { currentSlideIndex = 1; }
+            if (n < 1) { currentSlideIndex = slides.length; }
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[currentSlideIndex - 1].classList.add('active');
+            dots[currentSlideIndex - 1].classList.add('active');
+        }
+
+        function changeSlide(n) {
+            clearTimeout(slideTimer);
+            showSlide(currentSlideIndex += n);
+            autoSlide();
+        }
+
+        function currentSlide(n) {
+            clearTimeout(slideTimer);
+            showSlide(currentSlideIndex = n);
+            autoSlide();
+        }
+
+        function autoSlide() {
+            slideTimer = setTimeout(() => {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+                autoSlide();
+            }, 5000); // Change slide every 5 seconds
+        }
+
+        // Start auto-sliding when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.querySelector('.slideshow-container')) {
+                showSlide(currentSlideIndex);
+                autoSlide();
+            }
+        });
+
+        // ── SCROLL ANIMATION ──
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections and cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.news-section, .features, .feature-card, .news-panel, .testimonials, .testimonial-card, .stats-section, .product-slideshow-section');
+            animatedElements.forEach(el => {
+                el.classList.add('fade-in-element');
+                observer.observe(el);
+            });
+        });
+
+        // ── ANIMATED COUNTERS ──
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000; // 2 seconds
+            const increment = target / (duration / 16); // 60fps
+            let current = 0;
+
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    element.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            };
+
+            updateCounter();
+        }
+
+        // Trigger counters when stats section is visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.stat-number');
+                    counters.forEach(counter => {
+                        if (counter.textContent === '0') {
+                            animateCounter(counter);
+                        }
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) {
+                statsObserver.observe(statsSection);
+            }
+        });
+    </script>
+</body>
+</html>

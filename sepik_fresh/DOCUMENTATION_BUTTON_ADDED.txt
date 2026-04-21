@@ -1,0 +1,89 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    DOCUMENTATION BUTTON - ADDED ✓                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+✅ WHAT WAS ADDED
+═══════════════════════════════════════════════════════════════════════════════
+
+A green "View Documentation" button has been added to the home page.
+
+📍 LOCATION
+═══════════════════════════════════════════════════════════════════════════════
+
+Home Page (http://localhost:5000/)
+Below the "Get Started" and "Learn More" buttons
+
+🎨 BUTTON DESIGN
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ Green background (#2a7a30 - matches your theme)
+✓ White text
+✓ PDF icon (📄)
+✓ Opens in new tab
+✓ Hover effect (darker green + lift animation)
+✓ Responsive design (works on mobile)
+
+🔗 CURRENT LINK
+═══════════════════════════════════════════════════════════════════════════════
+
+Button links to: /static/docs/documentation.pdf
+
+📁 WHERE TO PUT YOUR PDF
+═══════════════════════════════════════════════════════════════════════════════
+
+Place your PDF file here:
+    sepik_fresh/static/docs/documentation.pdf
+
+That's it! The button will automatically work.
+
+📝 TO USE A DIFFERENT FILENAME
+═══════════════════════════════════════════════════════════════════════════════
+
+If your PDF has a different name:
+
+1. Open: sepik_fresh/templates/home.html
+2. Find line: href="/static/docs/documentation.pdf"
+3. Change to: href="/static/docs/YOUR_FILENAME.pdf"
+
+Example:
+    href="/static/docs/project_report.pdf"
+    href="/static/docs/sepik_fresh_docs.pdf"
+
+🧪 HOW TO TEST
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Add your PDF to: sepik_fresh/static/docs/
+2. Rename it to: documentation.pdf
+3. Start app: python app.py
+4. Open: http://localhost:5000
+5. Click the green "View Documentation" button
+6. PDF should open in new tab ✓
+
+💡 BUTTON CODE
+═══════════════════════════════════════════════════════════════════════════════
+
+HTML (in home.html):
+    <a href="/static/docs/documentation.pdf" class="btn-documentation" target="_blank">
+        <i class="fas fa-file-pdf"></i> View Documentation
+    </a>
+
+CSS (in main.css):
+    .btn-documentation {
+        background: #2a7a30;
+        color: white;
+        /* ... more styles ... */
+    }
+
+📋 FILES MODIFIED
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ sepik_fresh/templates/home.html       (button added)
+✓ sepik_fresh/static/css/main.css       (button styles added)
+✓ sepik_fresh/static/docs/README.txt    (instructions created)
+
+✅ READY TO USE
+═══════════════════════════════════════════════════════════════════════════════
+
+Just add your PDF file and it will work!
+
+═══════════════════════════════════════════════════════════════════════════════

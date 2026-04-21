@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepik Fresh - Admin Inbox</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/static/images/logo.jpeg" alt="Logo" class="sidebar-logo">
+            <span>Sepik Fresh</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="sidebar-link"><i class="fas fa-home"></i> Home</a>
+            <a href="/admin/orders" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="/products" class="sidebar-link"><i class="fas fa-box"></i> Products</a>
+            <a href="/admin/users" class="sidebar-link"><i class="fas fa-users"></i> Users</a>
+            <a href="/admin/inbox" class="sidebar-link active">
+                <i class="fas fa-envelope"></i> Inbox
+                {% if unread_count > 0 %}
+                <span class="badge-count">{{ unread_count }}</span>
+                {% endif %}
+            </a>
+            <a href="/alerts" class="sidebar-link"><i class="fas fa-bell"></i> Alerts</a>
+        </nav>
+        <a href="/logout" class="sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <div class="dashboard-main">
+        <header class="dash-topbar">
+            <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+            <h2>Contact Messages Inbox</h2>
+            <div class="dash-user"><i class="fas fa-user-circle"></i><span>{{ session_name }}</span></div>
+        </header>
+
+        <section class="dash-content">
+            <div class="dash-table-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3><i class="fas fa-inbox"></i> Messages ({{ unread_count }} unread)</h3>
+                    <div style="display:flex; gap:10px;">
+                        <a href="/admin/inbox?unread=1" class="btn-sm {% if unread_only %}btn-primary{% endif %}">
+                            <i class="fas fa-filter"></i> Unread Only
+                        </a>
+                        <a href="/admin/inbox" class="btn-sm {% if not unread_only %}btn-primary{% endif %}">
+                            <i class="fas fa-list"></i> All Messages
+                        </a>
+                    </div>
+                </div>
+
+                {% if messages %}
+                <table class="dash-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;"></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Message Preview</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for msg in messages %}
+                        <tr {% if not msg.is_read %}style="background:#f0fdf4; font-weight:600;"{% endif %}>
+                            <td>
+                                {% if not msg.is_read %}
+                                <i class="fas fa-circle" style="color:#2a7a30; font-size:8px;"></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ msg.name }}</td>
+                            <td>{{ msg.email }}</td>
+                            <td>{{ msg.message[:80] }}{% if msg.message|length > 80 %}...{% endif %}</td>
+                            <td>{{ msg.created_at.strftime('%d %b %Y %H:%M') }}</td>
+                            <td>
+                                <a href="/admin/inbox/{{ msg.id }}" class="btn-sm">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                {% if total_pages > 1 %}
+                <div class="pagination">
+                    {% if page > 1 %}
+                    <a href="?page={{ page - 1 }}{% if unread_only %}&unread=1{% endif %}" class="btn-sm">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+                    {% endif %}
+                    
+                    <span style="margin:0 15px; color:#6b7280;">
+                        Page {{ page }} of {{ total_pages }}
+                    </span>
+                    
+                    {% if page < total_pages %}
+                    <a href="?page={{ page + 1 }}{% if unread_only %}&unread=1{% endif %}" class="btn-sm">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% else %}
+                <p style="color:#6b7280; padding:20px 0; text-align:center;">
+                    {% if unread_only %}
+                    No unread messages.
+                    {% else %}
+                    No messages yet.
+                    {% endif %}
+                </p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    FOLDER STRUCTURE - WHERE TO PUT IMAGES                    ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+
+📁 YOUR PROJECT STRUCTURE
+═══════════════════════════════════════════════════════════════════════════════
+
+sepik_fresh/
+│
+├── app.py
+├── models.py
+├── config.py
+│
+├── static/
+│   ├── css/
+│   │   ├── main.css
+│   │   ├── dashboard.css
+│   │   └── login.css
+│   │
+│   ├── js/
+│   │   ├── main.js
+│   │   └── dashboard.js
+│   │
+│   └── images/
+│       ├── logo.jpeg
+│       ├── background.png
+│       │
+│       └── products/  ← PUT YOUR PRODUCT IMAGES HERE!
+│           ├── chicken.jpg
+│           ├── chicken_pieces.jpg
+│           ├── egg_tray.jpg
+│           └── eggs_dozen.jpg
+│
+├── templates/
+│   ├── home.html
+│   ├── products.html
+│   ├── order_new.html
+│   └── ...
+│
+└── database/
+    ├── sepik_database.sql
+    └── add_product_images.sql
+
+
+🎯 THE IMPORTANT FOLDER
+═══════════════════════════════════════════════════════════════════════════════
+
+This is where you put product images:
+
+    sepik_fresh/static/images/products/
+
+Full path from your project root:
+
+    📁 sepik_fresh
+        📁 static
+            📁 images
+                📁 products  ← HERE!
+                    📄 chicken.jpg
+                    📄 eggs.jpg
+                    📄 etc...
+
+
+📝 EXAMPLE: ADDING AN IMAGE
+═══════════════════════════════════════════════════════════════════════════════
+
+Let's say you have an image called "my_chicken_photo.jpg"
+
+STEP 1: Rename it to something simple
+    my_chicken_photo.jpg  →  chicken.jpg
+
+STEP 2: Copy to the products folder
+    FROM: Downloads/chicken.jpg
+    TO:   sepik_fresh/static/images/products/chicken.jpg
+
+STEP 3: Update database
+    UPDATE products 
+    SET image_url = '/static/images/products/chicken.jpg' 
+    WHERE product_id = 2;
+
+DONE! The image will appear on your website.
+
+
+🔗 PATH MAPPING
+═══════════════════════════════════════════════════════════════════════════════
+
+File System Path:
+    sepik_fresh/static/images/products/chicken.jpg
+
+Database Path (what you put in SQL):
+    /static/images/products/chicken.jpg
+
+URL in Browser:
+    http://localhost:5000/static/images/products/chicken.jpg
+
+
+📋 CHECKLIST FOR EACH IMAGE
+═══════════════════════════════════════════════════════════════════════════════
+
+For each product image:
+
+□ Image file saved to: sepik_fresh/static/images/products/
+□ Filename is simple (e.g., chicken.jpg, not IMG_20240101_123456.jpg)
+□ Database updated with: /static/images/products/FILENAME.jpg
+□ Browser refreshed to see changes
+
+
+💡 TIPS
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ Keep filenames simple and lowercase
+✓ No spaces in filenames (use underscore: chicken_pieces.jpg)
+✓ Use .jpg for photos (smaller file size)
+✓ Use .png if you need transparency
+✓ Keep images under 2MB for faster loading
+
+
+🎨 SUGGESTED FILENAMES
+═══════════════════════════════════════════════════════════════════════════════
+
+Product                          Suggested Filename
+─────────────────────────────────────────────────────────────────────────────
+Whole Fresh Chicken (1.5kg)  →  chicken.jpg
+Chicken Pieces (1kg)         →  chicken_pieces.jpg
+Fresh Eggs (Tray of 30)      →  egg_tray.jpg
+Fresh Eggs (Dozen)           →  eggs_dozen.jpg
+
+
+🔍 VERIFY YOUR SETUP
+═══════════════════════════════════════════════════════════════════════════════
+
+Check if folder exists:
+
+    Windows:
+        dir sepik_fresh\static\images\products
+
+    Linux/Mac:
+        ls -la sepik_fresh/static/images/products/
+
+You should see your image files listed.
+
+
+🚨 COMMON MISTAKES
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ WRONG: sepik_fresh/images/products/chicken.jpg
+✅ RIGHT: sepik_fresh/static/images/products/chicken.jpg
+
+❌ WRONG: /images/products/chicken.jpg (in database)
+✅ RIGHT: /static/images/products/chicken.jpg (in database)
+
+❌ WRONG: static/images/products/chicken.jpg (in database)
+✅ RIGHT: /static/images/products/chicken.jpg (in database)
+           ↑ Don't forget the leading slash!
+
+
+📸 EXAMPLE: COMPLETE WORKFLOW
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Download image from internet
+   📥 Downloads/fresh_chicken_photo.jpg
+
+2. Rename it
+   📝 Downloads/fresh_chicken_photo.jpg  →  Downloads/chicken.jpg
+
+3. Copy to products folder
+   📁 Downloads/chicken.jpg  →  sepik_fresh/static/images/products/chicken.jpg
+
+4. Verify it's there
+   📂 Open: sepik_fresh/static/images/products/
+   👀 See: chicken.jpg ✓
+
+5. Update database
+   💾 UPDATE products SET image_url = '/static/images/products/chicken.jpg' WHERE product_id = 2;
+
+6. Refresh browser
+   🌐 http://localhost:5000/products
+   👁️ See chicken image! ✓
+
+
+═══════════════════════════════════════════════════════════════════════════════
+That's it! Simple file management + SQL = Product images everywhere! 🎉
+═══════════════════════════════════════════════════════════════════════════════
