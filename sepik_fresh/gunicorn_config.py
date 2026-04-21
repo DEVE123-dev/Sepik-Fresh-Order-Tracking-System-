@@ -1,37 +1,20 @@
 """
 Gunicorn configuration file for production deployment
 """
-import multiprocessing
-
-# Server socket
 import os
+
+# Server socket - Render provides PORT environment variable
 bind = f"0.0.0.0:{os.getenv('PORT', '8000')}"
-backlog = 2048
 
-# Worker processes
-workers = multiprocessing.cpu_count() * 2 + 1
+# Worker processes - keep it simple for free tier
+workers = 2
 worker_class = "sync"
-worker_connections = 1000
-timeout = 30
-keepalive = 2
+timeout = 120
 
-# Logging
-accesslog = "-"  # Log to stdout for Render
-errorlog = "-"   # Log to stderr for Render
+# Logging - output to stdout/stderr for Render
+accesslog = "-"
+errorlog = "-"
 loglevel = "info"
-access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
 
 # Process naming
 proc_name = "sepik_fresh"
-
-# Server mechanics
-daemon = False
-pidfile = "logs/gunicorn.pid"
-umask = 0
-user = None
-group = None
-tmp_upload_dir = None
-
-# SSL (if needed)
-# keyfile = "/path/to/keyfile"
-# certfile = "/path/to/certfile"

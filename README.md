@@ -45,18 +45,21 @@ Sepik Fresh is a full-featured order tracking system designed for fresh produce 
 ## ✨ Features
 
 ### For Customers
-- 🛒 Browse products with images
-- 📦 Place orders online
+- 🛒 Browse products with high-quality images
+- 🎠 View featured products in home page slideshow
+- 📦 Place orders online with visual product selection
 - 🔍 Track order status in real-time
 - 📧 Receive email notifications
 - 👤 Manage profile and order history
 - 📱 Mobile-responsive interface
+- 📄 Access documentation PDF from home page
 
 ### For Administrators
 - 📊 Dashboard with key metrics
 - 👥 User management (add, edit, delete)
 - 📦 Order management and status updates
-- 🏷️ Product management with images
+- 🏷️ Product management with image support
+- 🖼️ Manual product image management (folder + database)
 - 📨 Contact message inbox
 - 📈 Export data to CSV
 - 🔔 Automated delivery alerts
@@ -65,6 +68,15 @@ Sepik Fresh is a full-featured order tracking system designed for fresh produce 
 - 🚚 View assigned deliveries
 - ✅ Update delivery status
 - 📋 Active delivery dashboard
+
+### System Features
+- 🎨 Modern, responsive UI with animations
+- 🔐 Secure role-based access control
+- 📸 Product image slideshow with auto-advance
+- 🗂️ Comprehensive documentation (22 files)
+- 🚀 Production-ready with Gunicorn
+- 📦 Single consolidated database file
+- 🔄 GitHub version control ready
 
 ---
 
@@ -88,9 +100,10 @@ Sepik Fresh is a full-featured order tracking system designed for fresh produce 
    ```
 
 3. **Setup database**
+   - Start XAMPP and run MySQL
    - Create database in phpMyAdmin: `sepik_database`
-   - Import: `database/sepik_database.sql`
-   - Run updates: `database/updates.sql`
+   - Import: `database/database.sql` (single consolidated file)
+   - Verify 9 tables created with sample data
 
 4. **Configure settings**
    ```bash
@@ -137,14 +150,21 @@ UPDATE products SET image_url = '/static/images/products/eggs_dozen.jpg' WHERE p
 ```
 
 **Done!** Images will appear on:
-- ✅ Products page
-- ✅ Order form
-- ✅ Home page slideshow
+- ✅ Products page (grid view with images)
+- ✅ Order form (visual product selection)
+- ✅ Home page slideshow (auto-rotating featured products)
+
+### Current Product Images
+The system includes 4 product images:
+- `wholefreshchicken.jpg` - Whole Fresh Chicken
+- `chickenpieces.jpg` - Chicken Pieces
+- `30eggs.jpg` - 30 Eggs Tray
+- `dozeneggs.jpg` - Dozen Eggs
 
 ### Image Path Format
 Always use: `/static/images/products/YOUR_IMAGE.jpg`
 
-**See detailed guide:** `sepik_fresh/START_HERE.txt`
+**See detailed guide:** `sepik_fresh/START_HERE.txt` or `docs/MANUAL_IMAGE_SETUP_GUIDE.md`
 
 ---
 
@@ -218,21 +238,28 @@ Always use: `/static/images/products/YOUR_IMAGE.jpg`
 
 #### 2. Database Setup
 
-**Option A: Using phpMyAdmin**
-1. Create database: `sepik_database`
-2. Import `database/sepik_database.sql`
-3. Import `database/updates.sql`
-4. Import `database/add_product_images.sql` (for images)
+**Option A: Using phpMyAdmin (Recommended)**
+1. Start XAMPP and run MySQL
+2. Open phpMyAdmin: `http://localhost/phpmyadmin`
+3. Create database: `sepik_database`
+4. Click "Import" tab
+5. Choose file: `database/database.sql`
+6. Click "Go" to import
+7. Verify 9 tables created with sample data
 
 **Option B: Using MySQL CLI**
 ```bash
 mysql -u root -p
 CREATE DATABASE sepik_database;
 USE sepik_database;
-SOURCE database/sepik_database.sql;
-SOURCE database/updates.sql;
-SOURCE database/add_product_images.sql;
+SOURCE database/database.sql;
 ```
+
+**Note:** The consolidated `database.sql` file includes:
+- All 9 tables (users, products, orders, customers, etc.)
+- Sample data for testing
+- Product image URLs
+- Default admin and staff accounts
 
 #### 3. Python Dependencies
 ```bash
@@ -647,13 +674,65 @@ For issues, questions, or support:
 
 ## 📊 Project Status
 
-**Version:** 1.0  
+**Version:** 2.0  
 **Status:** ✅ Production Ready  
-**Last Updated:** April 2026
+**Last Updated:** April 21, 2026
 
-### Recent Updates
-- ✅ Product images feature
-- ✅ Home page slideshow
+### Recent Updates (v2.0 - April 21, 2026)
+- ✅ **Product Images Feature** - Full implementation with manual upload system
+  - Added `image_url` column to products table
+  - Product images display on Products page, Order form, and Home slideshow
+  - Manual image management (admin adds images to folder and updates database)
+  - 4 product images included: whole chicken, chicken pieces, 30 eggs, dozen eggs
+  
+- ✅ **Home Page Slideshow** - Featured products carousel
+  - Auto-advance every 5 seconds
+  - Arrow navigation (previous/next)
+  - Dot indicators for slide position
+  - Displays product image, name, price, stock status
+  - Fully responsive design
+  
+- ✅ **Documentation Organization** - Complete restructure
+  - Moved all .md files to `docs/` folder (22 documentation files)
+  - Created comprehensive root `README.md`
+  - Created `docs/INDEX.md` for navigation
+  - Added setup guides: `SETUP_INSTRUCTIONS.md`, `QUICK_SETUP.txt`
+  - Kept quick reference .txt files in sepik_fresh folder
+  
+- ✅ **Database Consolidation** - Single source of truth
+  - Consolidated to one file: `sepik_fresh/database/database.sql`
+  - Includes all 9 tables with sample data
+  - Correct image URLs for all products
+  - Created `database/README.txt` with setup instructions
+  
+- ✅ **Documentation PDF Button** - Easy access to project docs
+  - Green "View Documentation" button on home page hero section
+  - Opens PDF in new tab
+  - Styled with PDF icon and hover effects
+  - Fully responsive
+  
+- ✅ **Production Deployment Ready** - Render configuration
+  - Added `render.yaml` for Render deployment
+  - Updated `gunicorn_config.py` for production
+  - Added gunicorn to requirements.txt
+  - Fixed `wsgi.py` with proper application export
+  - Created `RENDER_DEPLOYMENT.md` guide
+  - Note: Requires MySQL database (local XAMPP recommended for assignment)
+  
+- ✅ **GitHub Repository** - Version control setup
+  - Created comprehensive `.gitignore`
+  - Excludes __pycache__, .env, .db, node_modules, .vscode
+  - Successfully pushed to GitHub
+  - 112 files, 22,724 lines of code
+  
+- ✅ **Code Quality** - Clean and organized
+  - No TODO/FIXME comments
+  - No console.log/debugger statements
+  - Proper HTML5 structure
+  - SEO meta tags
+  - Accessibility compliant
+
+### Previous Updates (v1.0)
 - ✅ Email notifications
 - ✅ CSV export functionality
 - ✅ User management
