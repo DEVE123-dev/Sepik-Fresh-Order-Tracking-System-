@@ -116,14 +116,15 @@
     </div>
 
     <script src="/static/js/dashboard.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.3/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@latest"></script>
     <script>
     function exportPDF() {
         try {
             // Check if jsPDF is loaded
             if (typeof window.jspdf === 'undefined') {
-                alert('PDF library not loaded. Please refresh the page and try again.');
+                alert('PDF library not loaded. Please check your internet connection and refresh the page.');
+                console.error('jsPDF library not found');
                 return;
             }
             
@@ -196,7 +197,7 @@
             
         } catch (error) {
             console.error('PDF Export Error:', error);
-            alert('Error exporting PDF: ' + error.message);
+            alert('Error exporting PDF: ' + error.message + '. Please check browser console for details.');
         }
     }
     </script>
