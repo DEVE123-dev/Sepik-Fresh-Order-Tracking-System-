@@ -147,62 +147,107 @@
         </section>
     </div>
     <script src="/static/js/dashboard.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.3/jspdf.plugin.autotable.min.js"></script>
     <script>
         function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Add title
-            doc.setFontSize(18);
-            doc.text('Sepik Fresh - Orders Report', 14, 20);
-            
-            // Add date
-            doc.setFontSize(10);
-            doc.text('Generated: ' + new Date().toLocaleString(), 14, 28);
-            
-            // Get table data
-            const table = document.querySelector('.dash-table');
-            if (!table) {
-                alert('No orders to export');
-                return;
-            }
-            
-            // Extract table data
-            const headers = [];
-            const rows = [];
-            
-            // Get headers (exclude last column - Update Status)
-            const headerCells = table.querySelectorAll('thead th');
-            for (let i = 0; i < headerCells.length - 1; i++) {
-                headers.push(headerCells[i].textContent.trim());
-            }
-            
-            // Get rows
-            const bodyRows = table.querySelectorAll('tbody tr');
-            bodyRows.forEach(row => {
-                const rowData = [];
-                const cells = row.querySelectorAll('td');
-                for (let i = 0; i < cells.length - 1; i++) {
-                    rowData.push(cells[i].textContent.trim());
+            try {
+                // Check if jsPDF is loaded
+                if (typeof window.jspdf === 'undefined') {
+                    alert('PDF library not loaded. Please refresh the page and try again.');
+                    return;
                 }
-                rows.push(rowData);
-            });
-            
-            // Add table to PDF
-            doc.autoTable({
-                head: [headers],
-                body: rows,
-                startY: 35,
-                theme: 'grid',
-                styles: { fontSize: 9 },
-                headStyles: { fillColor: [34, 139, 34] }
-            });
-            
-            // Save PDF
-            const filename = 'sepik_fresh_orders_' + new Date().toISOString().split('T')[0] + '.pdf';
-            doc.save(filename);
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Add title
+                doc.setFontSize(18);
+                doc.setTextColor(34, 139, 34); // Green color
+                doc.text('Sepik Fresh - Orders Report', 14, 20);
+                
+                // Add date
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                doc.text('Generated: ' + new Date().toLocaleString(), 14, 28);
+                
+                // Get table data
+                const table = document.querySelector('.dash-table');
+                if (!table) {
+                    alert('No orders to export');
+                    return;
+                }
+                
+                // Extract table data
+                const headers = [];
+                const rows = [];
+                
+                // Get headers (exclude last column - Update Status)
+                const headerCells = table.querySelectorAll('thead th');
+                for (let i = 0; i < headerCells.length - 1; i++) {
+                    headers.push(headerCells[i].textContent.trim());
+                }
+                
+                // Get rows
+                const bodyRows = table.querySelectorAll('tbody tr');
+                bodyRows.forEach(row => {
+                    const rowData = [];
+                    const cells = row.querySelectorAll('td');
+                    for (let i = 0; i < cells.length - 1; i++) {
+                        // Clean up text content
+                        let text = cells[i].textContent.trim();
+                        // Remove extra whitespace
+                        text = text.replace(/\s+/g, ' ');
+                        rowData.push(text);
+                    }
+                    rows.push(rowData);
+                });
+                
+                // Add table to PDF
+                doc.autoTable({
+                    head: [headers],
+                    body: rows,
+                    startY: 35,
+                    theme: 'grid',
+                    styles: { 
+                        fontSize: 9,
+                        cellPadding: 3
+                    },
+                    headStyles: { 
+                        fillColor: [34, 139, 34],
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold'
+                    },
+                    alternateRowStyles: {
+                        fillColor: [245, 245, 245]
+                    }
+                });
+                
+                // Add footer
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.setTextColor(128, 128, 128);
+                    doc.text(
+                        'Page ' + i + ' of ' + pageCount,
+                        doc.internal.pageSize.getWidth() / 2,
+                        doc.internal.pageSize.getHeight() - 10,
+                        { align: 'center' }
+                    );
+                }
+                
+                // Save PDF
+                const filename = 'sepik_fresh_orders_' + new Date().toISOString().split('T')[0] + '.pdf';
+                doc.save(filename);
+                
+                // Show success message
+                alert('PDF exported successfully!');
+                
+            } catch (error) {
+                console.error('PDF Export Error:', error);
+                alert('Error exporting PDF: ' + error.message);
+            }
         }
     </script>
 </body>
