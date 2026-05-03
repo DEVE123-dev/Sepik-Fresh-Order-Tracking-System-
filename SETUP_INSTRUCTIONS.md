@@ -12,7 +12,7 @@ You have received the complete Sepik Fresh Order Tracking System project. This g
 
 Before starting, make sure you have:
 - ✅ Python 3.7 or higher installed
-- ✅ MySQL or MariaDB installed (with phpMyAdmin)
+- ✅ MySQL, Xamp, or MariaDB installed (with phpMyAdmin)
 - ✅ A code editor (VS Code, PyCharm, etc.)
 
 ---
